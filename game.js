@@ -35,13 +35,16 @@ function makeMove() {
 }
 var gameOver = false;
 makeMove();
-function continueGame(result) {
-  isOver();
+function continueGame() {
+  result = isOver();
   if (!gameOver) {
-    console.log('current results:,' resObj);
+    console.log('current results:', resObj);
     makeMove();
   } else {
     console.log('Game is over!', result, 'wins!');
+    console.log(board[0]);
+    console.log(board[1]);
+    console.log(board[2]);
   }
 }
 function isOver() {
@@ -52,11 +55,46 @@ function isOver() {
       var currentCol = board[i][j];
 
       if (i === 0) {
-        resObj[row1].push(currentCol)
+        resObj.row1[0] = currentCol;
+        resObj.dia1[0] = currentCol;
+        if (j === 0) {
+          resObj.col1[0] = currentCol;
+        } else if (j === 1) {
+          resObj.col2[1] = currentCol;
+        } else if (j === 2) {
+          resObj.col3[2] = currentCol;
+          resObj.dia2[0] = currentCol;
+        }
       } else if (i === 1) {
-        resObj[row3].push(currentCol)
-      } else {
-        resObj[row3].push(currentCol)
+        resObj.row2[1] = currentCol;
+        if (j === 0) {
+          resObj.col1[0] = currentCol;
+        } else if (j === 1) {
+          resObj.col2[1] = currentCol;
+          resObj.dia1[1] = currentCol;
+          resObj.dia2[1] = currentCol;
+        } else if (j === 2) {
+          resObj.col3[2] = currentCol;
+        }
+      } else if (i === 2) {
+        resObj.row3[2] = currentCol;
+        if (j === 0) {
+          resObj.col1[0] = currentCol;
+          resObj.dia2[2] = currentCol;
+        } else if (j === 1) {
+          resObj.col2[1] = currentCol;
+        } else if (j === 2) {
+          resObj.col3[2] = currentCol;
+          resObj.dia1[2] = currentCol;
+        }
+      }
+    }
+  }
+  for (var win in resObj) {
+    if (resObj[win][0] === 'X' || resObj[win][0] === 'O') {
+      if (resObj[win][0] === resObj[win][1] && resObj[win][0] === resObj[win][2]) {
+        gameOver = true;
+        return resObj[win][0];
       }
     }
   }
